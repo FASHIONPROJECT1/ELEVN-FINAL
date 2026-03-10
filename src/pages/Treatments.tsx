@@ -6,8 +6,11 @@ import TreatmentsPhilosophy from "@/components/elevn/TreatmentsPhilosophy"
 import TreatmentsGrid from "@/components/elevn/TreatmentsGrid"
 import TreatmentsCTA from "@/components/elevn/TreatmentsCTA"
 import { LOGOS, IMAGES, VIDEOS } from "@/lib/assets"
+import { useDocumentTitle } from "@/hooks/use-document-title"
 
-const Treatments = () => (
+const Treatments = () => {
+  useDocumentTitle("ELEVN — Treatments. Skin, Hair & Body.")
+  return (
   <div style={{ background: "#0A0A0A" }}>
     <Navbar logoUrl={LOGOS.symbol} />
     <TreatmentsHero videoUrl={VIDEOS.treatments.video1} />
@@ -17,6 +20,7 @@ const Treatments = () => (
     <TreatmentsCTA />
     <Footer />
   </div>
-)
+  )
+}
 
 export default Treatments

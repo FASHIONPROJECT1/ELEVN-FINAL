@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const FONT = '"n27", "Helvetica Neue", Arial, sans-serif'
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 const linkStyle: React.CSSProperties = {
     fontFamily: FONT,
@@ -17,10 +19,11 @@ const linkStyle: React.CSSProperties = {
     cursor: "pointer",
 }
 
-export default function Navbar({ logoUrl }: { logoUrl?: string }) {
+export default function Navbar({ logoUrl, forceOpaque }: { logoUrl?: string; forceOpaque?: boolean }) {
     const [scrolled, setScrolled] = useState(false)
     const [menuOpen, setMenuOpen] = useState(false)
     const [bookHover, setBookHover] = useState(false)
+    const isMobile = useIsMobile()
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 40)
@@ -28,14 +31,24 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
         return () => window.removeEventListener("scroll", onScroll)
     }, [])
 
-    const navBg = scrolled ? "rgba(10,10,10,0.95)" : "rgba(10,10,10,0.5)"
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (menuOpen) {
+            document.body.style.overflow = "hidden"
+        } else {
+            document.body.style.overflow = ""
+        }
+        return () => { document.body.style.overflow = "" }
+    }, [menuOpen])
+
+    const navBg = forceOpaque ? "rgba(10,10,10,1)" : scrolled ? "rgba(10,10,10,0.95)" : "rgba(10,10,10,0.5)"
 
     return (
         <>
             <motion.nav
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                transition={{ duration: 0.6, ease: EASE, delay: 0.2 }}
                 style={{
                     position: "fixed",
                     top: 0,
@@ -55,21 +68,23 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
                     boxSizing: "border-box",
                 }}
             >
-                {/* LEFT: Home, Clinic, Treatments */}
-                <div style={{
-                    position: "absolute",
-                    left: "clamp(20px, 4vw, 48px)",
-                    display: "flex",
-                    gap: "clamp(16px, 2vw, 32px)",
-                    alignItems: "center",
-                }}>
-                    <NavLink label="HOME" href="/" />
-                    <NavLink label="CLINIC" href="/clinic" />
-                    <NavLink label="TREATMENTS" href="/treatments" />
-                </div>
+                {/* LEFT: Home, Clinic, Treatments — hidden on mobile */}
+                {!isMobile && (
+                    <div style={{
+                        position: "absolute",
+                        left: "clamp(20px, 4vw, 48px)",
+                        display: "flex",
+                        gap: "clamp(16px, 2vw, 32px)",
+                        alignItems: "center",
+                    }}>
+                        <NavLink label="HOME" href="/" />
+                        <NavLink label="CLINIC" href="/clinic" />
+                        <NavLink label="TREATMENTS" href="/treatments" />
+                    </div>
+                )}
 
                 {/* CENTER: Logo */}
-                <Link to="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+                <Link to="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", zIndex: 901 }}>
                     {logoUrl ? (
                         <img src={logoUrl} alt="ELEVN" style={{ height: 30, width: "auto", filter: "brightness(0) invert(1)" }} />
                     ) : (
@@ -77,54 +92,62 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
                     )}
                 </Link>
 
-                {/* RIGHT: Shop, Book */}
-                <div style={{
-                    position: "absolute",
-                    right: "clamp(20px, 4vw, 48px)",
-                    display: "flex",
-                    gap: "clamp(16px, 2vw, 28px)",
-                    alignItems: "center",
-                }}>
-                    <NavLink label="SHOP" href="/shop" />
-                    <Link
-                        to="/bookings"
-                        onMouseEnter={() => setBookHover(true)}
-                        onMouseLeave={() => setBookHover(false)}
+                {/* RIGHT: Shop, Book — hidden on mobile */}
+                {!isMobile && (
+                    <div style={{
+                        position: "absolute",
+                        right: "clamp(20px, 4vw, 48px)",
+                        display: "flex",
+                        gap: "clamp(16px, 2vw, 28px)",
+                        alignItems: "center",
+                    }}>
+                        <NavLink label="SHOP" href="/shop" />
+                        <Link
+                            to="/bookings"
+                            onMouseEnter={() => setBookHover(true)}
+                            onMouseLeave={() => setBookHover(false)}
+                            style={{
+                                fontFamily: FONT,
+                                fontSize: 11,
+                                fontWeight: 400,
+                                letterSpacing: "0.15em",
+                                textTransform: "uppercase",
+                                color: bookHover ? "#0A0A0A" : "#FFFFFF",
+                                backgroundColor: bookHover ? "#FFFFFF" : "transparent",
+                                border: "1px solid rgba(255,255,255,0.6)",
+                                padding: "9px 18px",
+                                textDecoration: "none",
+                                transition: "background 0.3s ease, color 0.3s ease",
+                                cursor: "pointer",
+                            }}
+                        >
+                            BOOK
+                        </Link>
+                    </div>
+                )}
+
+                {/* Mobile hamburger / close button */}
+                {isMobile && (
+                    <button
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        aria-label={menuOpen ? "Close menu" : "Open menu"}
                         style={{
-                            fontFamily: FONT,
-                            fontSize: 11,
-                            fontWeight: 400,
-                            letterSpacing: "0.15em",
-                            textTransform: "uppercase",
-                            color: bookHover ? "#0A0A0A" : "#FFFFFF",
-                            backgroundColor: bookHover ? "#FFFFFF" : "transparent",
-                            border: "1px solid rgba(255,255,255,0.6)",
-                            padding: "9px 18px",
-                            textDecoration: "none",
-                            transition: "background 0.3s ease, color 0.3s ease",
+                            position: "absolute",
+                            right: 20,
+                            background: "none",
+                            border: "none",
+                            color: "#fff",
+                            fontSize: 22,
                             cursor: "pointer",
+                            zIndex: 901,
+                            fontFamily: FONT,
+                            letterSpacing: "0.05em",
+                            padding: "8px",
                         }}
                     >
-                        BOOK
-                    </Link>
-                </div>
-
-                {/* Mobile hamburger */}
-                <button
-                    onClick={() => setMenuOpen(!menuOpen)}
-                    style={{
-                        display: "none",
-                        position: "absolute",
-                        right: 20,
-                        background: "none",
-                        border: "none",
-                        color: "#fff",
-                        fontSize: 24,
-                        cursor: "pointer",
-                    }}
-                >
-                    ☰
-                </button>
+                        {menuOpen ? "✕" : "☰"}
+                    </button>
+                )}
             </motion.nav>
 
             {/* Mobile menu overlay */}
@@ -134,6 +157,7 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3, ease: EASE }}
                         style={{
                             position: "fixed",
                             inset: 0,
@@ -143,7 +167,7 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
                             flexDirection: "column",
                             alignItems: "center",
                             justifyContent: "center",
-                            gap: 40,
+                            gap: 36,
                         }}
                     >
                         {[
@@ -153,7 +177,7 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
                             { label: "SHOP", to: "/shop" },
                             { label: "BOOK", to: "/bookings" },
                         ].map((item, i) => (
-                            <motion.div key={item.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}>
+                            <motion.div key={item.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07, duration: 0.5, ease: EASE }}>
                                 <Link
                                     to={item.to}
                                     style={{

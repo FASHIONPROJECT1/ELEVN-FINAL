@@ -14,7 +14,7 @@ export default function BookingsPage({ logoUrl }: { logoUrl?: string }) {
                 <p style={{ fontFamily: FONT, fontSize: "clamp(13px, 1.1vw, 15px)", fontWeight: 300, letterSpacing: "0.01em", lineHeight: 1.7, color: "rgba(17,17,17,0.55)", margin: "24px 0 0", maxWidth: 480 }}>Select your service below. Our team will confirm your appointment within 24 hours.</p>
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: EASE, delay: 0.4 }} style={{ maxWidth: 860, margin: "0 auto", padding: "clamp(40px, 5vw, 64px) clamp(24px, 4vw, 48px) clamp(80px, 10vw, 120px)", boxSizing: "border-box" }}>
-                <iframe src={IFRAME_SRC} width="100%" height={900} frameBorder="0" style={{ border: "none", borderRadius: 0, boxShadow: "0 2px 40px rgba(0,0,0,0.05)", display: "block", width: "100%" }} title="ELEVN Booking System" allow="payment" />
+                <iframe src={IFRAME_SRC} width="100%" style={{ border: "none", borderRadius: 0, boxShadow: "0 2px 40px rgba(0,0,0,0.05)", display: "block", width: "100%", height: "clamp(600px, 80vh, 900px)" }} title="ELEVN Booking System" allow="payment" />
             </motion.div>
             <div style={{ textAlign: "center", padding: "0 24px clamp(60px, 8vw, 100px)", borderTop: "1px solid rgba(17,17,17,0.05)", paddingTop: 36 }}>
                 <p style={{ fontFamily: FONT, fontSize: 11, letterSpacing: "0.12em", color: "rgba(17,17,17,0.3)", textTransform: "uppercase", margin: 0 }}>Fraumünsterstrasse 11 · 8001 Zürich · hello@elevn.ch</p>

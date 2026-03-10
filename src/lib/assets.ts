@@ -35,7 +35,6 @@ export const IMAGES = {
     "/images/insta-2.jpg",
     "/images/insta-3.jpg",
     "/images/insta-4.png",
-    "/images/insta-1.jpg",
   ],
   newsletterBg: "/images/newsletter-bg.jpg",
 }

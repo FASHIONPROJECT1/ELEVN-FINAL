@@ -12,8 +12,11 @@ import HomeAerial from "@/components/elevn/HomeAerial"
 import HomeInstagram from "@/components/elevn/HomeInstagram"
 import HomeNewsletter from "@/components/elevn/HomeNewsletter"
 import { LOGOS, IMAGES, VIDEOS } from "@/lib/assets"
+import { useDocumentTitle } from "@/hooks/use-document-title"
 
-const Home = () => (
+const Home = () => {
+  useDocumentTitle("ELEVN — Intelligent Beauty. Zürich.")
+  return (
   <div style={{ background: "#FAF9F7" }}>
     <Navbar logoUrl={LOGOS.symbol} />
     <HomeHero videoUrl={VIDEOS.home.video1} />
@@ -29,6 +32,7 @@ const Home = () => (
     <HomeNewsletter />
     <Footer />
   </div>
-)
+  )
+}
 
 export default Home

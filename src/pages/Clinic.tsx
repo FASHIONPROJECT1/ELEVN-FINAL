@@ -5,8 +5,11 @@ import ClinicDetails from "@/components/elevn/ClinicDetails"
 import ClinicTeam from "@/components/elevn/ClinicTeam"
 import ClinicProcess from "@/components/elevn/ClinicProcess"
 import { LOGOS, IMAGES } from "@/lib/assets"
+import { useDocumentTitle } from "@/hooks/use-document-title"
 
-const Clinic = () => (
+const Clinic = () => {
+  useDocumentTitle("ELEVN — Our Clinic. Zürich.")
+  return (
   <div style={{ background: "#FAF9F7" }}>
     <Navbar logoUrl={LOGOS.symbol} />
     <ClinicHero photoUrl={IMAGES.aboutUs.photo1} />
@@ -20,6 +23,7 @@ const Clinic = () => (
     />
     <Footer />
   </div>
-)
+  )
+}
 
 export default Clinic
