@@ -25,6 +25,12 @@ export const IMAGES = {
   treatments: {
     photo1: `${BASE}/images/treatments/treatments-photo-1.webp`,
   },
+  clinic: {
+    photo1: "/images/clinic-1.jpg",
+    photo2: "/images/clinic-2.jpg",
+    productsPhoto: "/images/treatments-products-2.jpg",
+    treatmentPhoto: "/images/treatments-products.jpg",
+  },
   nav: {
     aboutUs: "/images/nav-aboutus.jpg",
     treatments: "/images/nav-treatments.png",

@@ -18,8 +18,9 @@ const Clinic = () => {
     <ClinicTeam
       accentPhoto={IMAGES.aboutUs.photo3}
       vasePhoto={IMAGES.aboutUs.photo2}
-      womanPhoto1={IMAGES.home.photo5}
-      womanPhoto2={IMAGES.home.photo6}
+      clinicPhoto1={IMAGES.clinic.photo1}
+      clinicPhoto2={IMAGES.clinic.photo2}
+      productsPhoto={IMAGES.clinic.productsPhoto}
     />
     <Footer />
   </div>
