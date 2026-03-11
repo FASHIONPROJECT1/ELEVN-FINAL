@@ -4,6 +4,7 @@ import TreatmentsHero from "@/components/elevn/TreatmentsHero"
 import TreatmentsIntro from "@/components/elevn/TreatmentsIntro"
 import TreatmentsPhilosophy from "@/components/elevn/TreatmentsPhilosophy"
 import TreatmentsGrid from "@/components/elevn/TreatmentsGrid"
+import TreatmentsShowcase from "@/components/elevn/TreatmentsShowcase"
 import TreatmentsCTA from "@/components/elevn/TreatmentsCTA"
 import { LOGOS, IMAGES, VIDEOS } from "@/lib/assets"
 import { useDocumentTitle } from "@/hooks/use-document-title"
@@ -17,6 +18,7 @@ const Treatments = () => {
     <TreatmentsIntro photoUrl={IMAGES.treatments.photo1} />
     <TreatmentsPhilosophy videoUrl={VIDEOS.treatments.video2} />
     <TreatmentsGrid video3Url={VIDEOS.treatments.video3} video4Url={VIDEOS.treatments.video4} />
+    <TreatmentsShowcase photoUrl={IMAGES.clinic.treatmentPhoto} productsPhotoUrl={IMAGES.clinic.productsPhoto} />
     <TreatmentsCTA />
     <Footer />
   </div>
