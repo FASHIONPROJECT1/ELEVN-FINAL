@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion"
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const FONT = '"n27", "Helvetica Neue", Arial, sans-serif'
 const MONO = '"Roboto Mono", "Courier New", monospace'
@@ -19,11 +20,12 @@ export default function HomePillars({ photo4Url, photo5Url, photo6Url }: HomePil
     const inView = useInView(sectionRef, { once: true, margin: "-10%" })
     const photos = [photo4Url, photo5Url, photo6Url]
     const [btnHover, setBtnHover] = useState(false)
+    const isMobile = useIsMobile()
 
     return (
         <section ref={sectionRef} style={{ background: "#FAF9F7", width: "100%", padding: "clamp(40px, 5vw, 64px) clamp(16px, 2vw, 24px)", boxSizing: "border-box" }}>
             <motion.p initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: EASE }} style={{ fontFamily: MONO, fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(30,28,24,0.35)", margin: "0 auto clamp(32px, 4vw, 48px)", maxWidth: 1440, textAlign: "center" }}>THE ELEVN METHOD</motion.p>
-            <div style={{ maxWidth: 1440, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(10px, 1.2vw, 20px)" }}>
+            <div style={{ maxWidth: 1440, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: isMobile ? 20 : "clamp(10px, 1.2vw, 20px)" }}>
                 {DEFAULT_CARDS.map((card, i) => (
                     <PillarCard key={i} index={i} title={card.title} body={card.body} photoUrl={photos[i]} inView={inView} />
                 ))}

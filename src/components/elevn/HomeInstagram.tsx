@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion"
 import { useRef, useState } from "react"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const FONT = '"n27", "Helvetica Neue", Arial, sans-serif'
 const MONO = '"Roboto Mono", "Courier New", monospace'
@@ -14,6 +15,7 @@ const PHOTOS = [
 export default function HomeInstagram() {
     const ref = useRef(null)
     const inView = useInView(ref, { once: true, margin: "-8%" })
+    const isMobile = useIsMobile()
 
     return (
         <section ref={ref} style={{ background: "#FAF9F7", width: "100%", padding: "clamp(40px, 5vw, 64px) clamp(16px, 2vw, 24px)", boxSizing: "border-box" }}>
@@ -22,7 +24,7 @@ export default function HomeInstagram() {
                     <motion.p initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: EASE }} style={{ fontFamily: MONO, fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(30,28,24,0.4)", margin: "0 0 8px" }}>Follow us</motion.p>
                     <motion.a href="https://www.instagram.com/elevn11.clinic/" target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: EASE, delay: 0.1 }} style={{ fontFamily: FONT, fontSize: "clamp(14px, 1.5vw, 18px)", fontWeight: 400, letterSpacing: "0.02em", color: "#1E1C18", textDecoration: "none" }}>@elevn11.clinic</motion.a>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(8px, 1vw, 14px)" }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: isMobile ? 10 : "clamp(8px, 1vw, 14px)" }}>
                     {PHOTOS.map((photo, i) => (
                         <InstaPhoto key={i} photo={photo} index={i} inView={inView} />
                     ))}

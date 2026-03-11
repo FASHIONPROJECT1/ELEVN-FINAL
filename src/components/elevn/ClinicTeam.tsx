@@ -1,5 +1,6 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion"
 import { useRef, useState } from "react"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const FONT = '"n27", "Helvetica Neue", Arial, sans-serif'
 const MONO = '"Roboto Mono", "Courier New", monospace'
@@ -41,15 +42,13 @@ export default function ClinicTeam({ accentPhoto, vasePhoto, womanPhoto1, womanP
     const vaseInView = useInView(vaseRef, { once: true, margin: "-15%" })
     const [vaseHovered, setVaseHovered] = useState(false)
     const [crystalHovered, setCrystalHovered] = useState(false)
-
-    const firstHalf = CHAPTERS.slice(0, 2)
-    const secondHalf = CHAPTERS.slice(2)
+    const isMobile = useIsMobile()
 
     return (
         <section ref={ref} style={{ background: "#FAF9F7", width: "100%", padding: "clamp(80px, 10vw, 140px) clamp(16px, 2vw, 24px)", boxSizing: "border-box" }}>
             <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(8px, 2vw, 40px)" }}>
                 {/* Section intro + vase photo side by side */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 0.7fr", gap: "clamp(32px, 5vw, 64px)", alignItems: "start", marginBottom: "clamp(64px, 8vw, 120px)" }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 0.7fr", gap: isMobile ? 32 : "clamp(32px, 5vw, 64px)", alignItems: "start", marginBottom: "clamp(64px, 8vw, 120px)" }}>
                     <div>
                         <div style={{ marginBottom: "clamp(24px, 3vw, 40px)" }}>
                             <motion.p initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: EASE }} style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(30,28,24,0.35)", margin: "0 0 16px" }}>THE PHILOSOPHY</motion.p>
@@ -112,47 +111,36 @@ export default function ClinicTeam({ accentPhoto, vasePhoto, womanPhoto1, womanP
                     )}
                 </div>
 
-                {/* Woman photo 1 — after text+vase intro */}
+                {/* Chapter 1: Holistic Intelligence — text separates vase from photo */}
+                <div style={{ marginBottom: "clamp(60px, 8vw, 100px)" }}>
+                    <ChapterBlock chapter={CHAPTERS[0]} index={0} />
+                </div>
+
+                {/* Woman photo 1 — SQUARE, with label */}
                 {womanPhoto1 && (
-                    <div style={{ margin: "clamp(40px, 6vw, 80px) 0", padding: "0" }}>
-                        <LabeledParallaxInline
+                    <div style={{ margin: "0 0 clamp(60px, 8vw, 100px)" }}>
+                        <SquareParallaxInline
                             url={womanPhoto1}
                             alt="ELEVN skin expert"
-                            height="clamp(350px, 55vw, 650px)"
                             label="THE SKIN EXPERTS"
                             caption="Where precision meets intuition."
                         />
                     </div>
                 )}
 
-                {/* First two chapters: Holistic Intelligence + Closing the Gap */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "clamp(60px, 8vw, 100px)" }}>
-                    {firstHalf.map((ch, i) => (
-                        <ChapterBlock key={i} chapter={ch} index={i} />
-                    ))}
+                {/* Chapter 2: Beyond the Surface */}
+                <div style={{ marginBottom: "clamp(60px, 8vw, 100px)" }}>
+                    <ChapterBlock chapter={CHAPTERS[1]} index={1} />
                 </div>
 
-                {/* Woman photo 2 — after Closing the Gap, before Beyond Surface */}
-                {womanPhoto2 && (
-                    <div style={{ margin: "clamp(40px, 6vw, 80px) 0", padding: "0" }}>
-                        <LabeledParallaxInline
-                            url={womanPhoto2}
-                            alt="ELEVN care"
-                            height="clamp(350px, 50vw, 600px)"
-                            label="PERSONALIZED CARE"
-                            caption="Every protocol begins with listening."
-                        />
-                    </div>
-                )}
-
-                {/* Crystal / diamond blue photo — with logo overlay */}
+                {/* Crystal / diamond photo — with logo overlay */}
                 {accentPhoto && (
                     <div
                         ref={imgRef}
                         className="clip-round"
                         onMouseEnter={() => setCrystalHovered(true)}
                         onMouseLeave={() => setCrystalHovered(false)}
-                        style={{ margin: "clamp(60px, 8vw, 100px) auto", height: "clamp(350px, 50vw, 600px)", maxWidth: 1200, position: "relative", background: "#FAF9F7", overflow: "hidden", cursor: "default" }}
+                        style={{ margin: "0 auto clamp(60px, 8vw, 100px)", aspectRatio: "16/9", maxWidth: 1200, position: "relative", background: "#FAF9F7", overflow: "hidden", cursor: "default" }}
                     >
                         <motion.div
                             animate={{ scale: crystalHovered ? 1.05 : 1 }}
@@ -199,23 +187,36 @@ export default function ClinicTeam({ accentPhoto, vasePhoto, womanPhoto1, womanP
                     </div>
                 )}
 
-                {/* Last two chapters */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "clamp(60px, 8vw, 100px)" }}>
-                    {secondHalf.map((ch, i) => (
-                        <ChapterBlock key={i + 2} chapter={ch} index={i + 2} />
-                    ))}
+                {/* Chapter 3: A New Standard */}
+                <div style={{ marginBottom: "clamp(60px, 8vw, 100px)" }}>
+                    <ChapterBlock chapter={CHAPTERS[2]} index={2} />
                 </div>
+
+                {/* Woman photo 2 — SQUARE, with label */}
+                {womanPhoto2 && (
+                    <div style={{ margin: "0 0 clamp(60px, 8vw, 100px)" }}>
+                        <SquareParallaxInline
+                            url={womanPhoto2}
+                            alt="ELEVN care"
+                            label="PERSONALIZED CARE"
+                            caption="Every protocol begins with listening."
+                        />
+                    </div>
+                )}
+
+                {/* Chapter 4: Consciously Chosen */}
+                <ChapterBlock chapter={CHAPTERS[3]} index={3} />
             </div>
         </section>
     )
 }
 
-function LabeledParallaxInline({ url, alt, height, label, caption }: { url: string; alt: string; height: string; label?: string; caption?: string }) {
+function SquareParallaxInline({ url, alt, label, caption }: { url: string; alt: string; label?: string; caption?: string }) {
     const ref = useRef(null)
     const [hovered, setHovered] = useState(false)
     const inView = useInView(ref, { once: true, margin: "-15%" })
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] })
-    const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1, 1.04])
+    const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.06, 1, 1.03])
 
     return (
         <div
@@ -223,21 +224,21 @@ function LabeledParallaxInline({ url, alt, height, label, caption }: { url: stri
             className="clip-round"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            style={{ maxWidth: 1200, margin: "0 auto", height, position: "relative", background: "#FAF9F7", overflow: "hidden", cursor: "default" }}
+            style={{ maxWidth: 720, margin: "0 auto", aspectRatio: "1/1", position: "relative", background: "#FAF9F7", overflow: "hidden", cursor: "default" }}
         >
             <motion.div
-                animate={{ scale: hovered ? 1.05 : 1 }}
+                animate={{ scale: hovered ? 1.04 : 1 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                style={{ position: "absolute", inset: "-8%", scale: imgScale, transformOrigin: "center center" }}
+                style={{ position: "absolute", inset: "-6%", scale: imgScale, transformOrigin: "center center" }}
             >
-                <img src={url} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+                <img src={url} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }} />
             </motion.div>
             <motion.div
                 animate={{ opacity: hovered ? 0 : 1 }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 40%, rgba(255,255,255,0.65) 100%)", zIndex: 1 }}
+                style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(255,255,255,0.55) 100%)", zIndex: 1 }}
             />
-            <div style={{ position: "absolute", bottom: "clamp(24px, 3vw, 44px)", left: "clamp(24px, 3vw, 44px)", zIndex: 2, display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ position: "absolute", bottom: "clamp(20px, 3vw, 36px)", left: "clamp(20px, 3vw, 36px)", zIndex: 2, display: "flex", flexDirection: "column", gap: 6 }}>
                 {label && (
                     <motion.p initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, ease: EASE, delay: 0.3 }} style={{ fontFamily: MONO, fontSize: "clamp(8px, 0.7vw, 10px)", letterSpacing: "0.24em", textTransform: "uppercase", color: "rgba(30,28,24,0.5)", margin: 0 }}>{label}</motion.p>
                 )}
@@ -253,6 +254,7 @@ function ChapterBlock({ chapter, index }: { chapter: typeof CHAPTERS[0]; index: 
     const ref = useRef(null)
     const inView = useInView(ref, { once: true, margin: "-12%" })
     const isEven = index % 2 === 0
+    const isMobile = useIsMobile()
 
     return (
         <motion.div
@@ -262,12 +264,12 @@ function ChapterBlock({ chapter, index }: { chapter: typeof CHAPTERS[0]; index: 
             transition={{ duration: 1, ease: EASE, delay: 0.05 }}
             style={{
                 display: "grid",
-                gridTemplateColumns: isEven ? "1fr 1.4fr" : "1.4fr 1fr",
-                gap: "clamp(32px, 5vw, 80px)",
+                gridTemplateColumns: isMobile ? "1fr" : (isEven ? "1fr 1.4fr" : "1.4fr 1fr"),
+                gap: isMobile ? 24 : "clamp(32px, 5vw, 80px)",
                 alignItems: "start",
             }}
         >
-            <div style={{ order: isEven ? 0 : 1, paddingTop: 4 }}>
+            <div style={{ order: isMobile ? 0 : (isEven ? 0 : 1), paddingTop: 4 }}>
                 <motion.span
                     initial={{ opacity: 0 }}
                     animate={inView ? { opacity: 1 } : {}}
@@ -292,7 +294,7 @@ function ChapterBlock({ chapter, index }: { chapter: typeof CHAPTERS[0]; index: 
                 />
             </div>
 
-            <div style={{ order: isEven ? 1 : 0 }}>
+            <div style={{ order: isMobile ? 1 : (isEven ? 1 : 0) }}>
                 <motion.h3
                     initial={{ opacity: 0, y: 16 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}

@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion"
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const FONT = '"n27", "Helvetica Neue", Arial, sans-serif'
 const MONO = '"Roboto Mono", "Courier New", monospace'
@@ -15,6 +16,7 @@ const CARDS = [
 export default function HomeNavCards() {
     const ref = useRef(null)
     const inView = useInView(ref, { once: true, margin: "-8%" })
+    const isMobile = useIsMobile()
 
     return (
         <section style={{ background: "#FAF9F7", width: "100%", padding: "clamp(16px, 2vw, 32px) clamp(16px, 2vw, 24px) clamp(48px, 6vw, 72px)", boxSizing: "border-box" }}>
@@ -27,7 +29,7 @@ export default function HomeNavCards() {
                 >
                     EXPLORE
                 </motion.p>
-                <div ref={ref} style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(10px, 1.2vw, 20px)" }}>
+                <div ref={ref} style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: isMobile ? 12 : "clamp(10px, 1.2vw, 20px)" }}>
                     {CARDS.map((card, i) => (
                         <NavCard key={card.label} card={card} index={i} inView={inView} />
                     ))}

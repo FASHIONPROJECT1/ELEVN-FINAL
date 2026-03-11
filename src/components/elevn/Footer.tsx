@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 import { Link } from "react-router-dom"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const FONT = '"n27", "Helvetica Neue", Arial, sans-serif'
 const MONO = '"Roboto Mono", "Courier New", monospace'
@@ -9,11 +10,12 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 export default function Footer() {
     const ref = useRef(null)
     const inView = useInView(ref, { once: true, margin: "-60px" })
+    const isMobile = useIsMobile()
 
     return (
         <footer ref={ref} style={{ background: "#E8E4DE", padding: "clamp(64px, 8vw, 100px) clamp(24px, 5vw, 80px) 48px", boxSizing: "border-box", width: "100%" }}>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, ease: EASE }} style={{ maxWidth: 1440, margin: "0 auto" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 48, marginBottom: 64 }}>
+                <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: isMobile ? 40 : 48, marginBottom: 64 }}>
                     <div>
                         <img src="/images/logo-symbol.svg" alt="ELEVN" style={{ height: 32, width: "auto", opacity: 0.7, marginBottom: 12 }} />
                         <span style={{ fontFamily: FONT, fontSize: 24, fontWeight: 700, letterSpacing: "0.08em", color: "#1E1C18", display: "block", marginBottom: 10 }}>ELEVN</span>
@@ -27,7 +29,7 @@ export default function Footer() {
                             Book a Consultation
                         </Link>
                     </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(32px, 5vw, 80px)" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: isMobile ? 32 : "clamp(32px, 5vw, 80px)" }}>
                         <div>
                             <FooterHeading>PAGES</FooterHeading>
                             <FooterLink label="Home" href="/" />

@@ -1,6 +1,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion"
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const FONT = '"n27", "Helvetica Neue", Arial, sans-serif'
 const MONO = '"Roboto Mono", "Courier New", monospace'
@@ -12,12 +13,13 @@ export default function HomeCTA({ photoUrl }: { photoUrl: string }) {
     const cardInView = useInView(cardRef, { once: true, margin: "-10%" })
     const [btnHover, setBtnHover] = useState(false)
     const [imgHover, setImgHover] = useState(false)
+    const isMobile = useIsMobile()
     const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] })
     const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "6%"])
 
     return (
         <section ref={sectionRef} style={{ width: "100%", padding: "clamp(4px, 0.5vw, 8px) clamp(16px, 2vw, 24px)", boxSizing: "border-box", background: "#FAF9F7" }}>
-            <div style={{ maxWidth: 1440, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 2fr", gap: "clamp(10px, 1.2vw, 16px)", alignItems: "stretch" }}>
+            <div style={{ maxWidth: 1440, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 2fr", gap: isMobile ? 16 : "clamp(10px, 1.2vw, 16px)", alignItems: "stretch" }}>
                 <motion.div
                     ref={cardRef}
                     initial={{ opacity: 0, y: 24 }}

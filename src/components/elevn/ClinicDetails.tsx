@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from "framer-motion"
 import { useRef, useState } from "react"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const FONT = '"n27", "Helvetica Neue", Arial, sans-serif'
 const MONO = '"Roboto Mono", "Courier New", monospace'
@@ -11,11 +12,12 @@ const ABOUT_TEXT_2 = "Holistic Intelligence means the connection between precise
 export default function ClinicDetails({ photo2Url, photo3Url, hidePhotos }: { photo2Url: string; photo3Url: string; hidePhotos?: boolean }) {
     const textRef = useRef(null)
     const textInView = useInView(textRef, { once: true, margin: "-10%" })
+    const isMobile = useIsMobile()
 
     return (
         <div style={{ background: "#FAF9F7" }}>
             {/* About text — editorial split layout */}
-            <div ref={textRef} style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(80px, 10vw, 140px) clamp(24px, 4vw, 64px)", display: "grid", gridTemplateColumns: "0.4fr 1fr", gap: "clamp(32px, 5vw, 80px)", alignItems: "start" }}>
+            <div ref={textRef} style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(80px, 10vw, 140px) clamp(24px, 4vw, 64px)", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "0.4fr 1fr", gap: isMobile ? 24 : "clamp(32px, 5vw, 80px)", alignItems: "start" }}>
                 <div>
                     <motion.p initial={{ opacity: 0, y: 8 }} animate={textInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: EASE }} style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(30,28,24,0.35)", margin: "0 0 16px" }}>ABOUT</motion.p>
                     <motion.div initial={{ scaleX: 0 }} animate={textInView ? { scaleX: 1 } : {}} transition={{ duration: 0.8, ease: EASE, delay: 0.1 }} style={{ height: 1, background: "rgba(30,28,24,0.12)", transformOrigin: "left" }} />

@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion"
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const FONT = '"n27", "Helvetica Neue", Arial, sans-serif'
 const MONO = '"Roboto Mono", "Courier New", monospace'
@@ -12,11 +13,12 @@ export default function HomeIntro({ videoUrl, photo1Url, photo2Url }: HomeIntroP
     const textRef = useRef(null)
     const textInView = useInView(textRef, { once: true, margin: "-15%" })
     const [hoverIdx, setHoverIdx] = useState<number | null>(null)
+    const isMobile = useIsMobile()
 
     return (
         <section style={{ background: "#FAF9F7", width: "100%", padding: "clamp(40px, 5vw, 64px) clamp(16px, 2vw, 24px)", boxSizing: "border-box", overflow: "hidden" }}>
             <div style={{ maxWidth: 1440, margin: "0 auto", padding: "0 clamp(8px, 3vw, 56px)" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(10px, 1.2vw, 16px)" }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: isMobile ? 12 : "clamp(10px, 1.2vw, 16px)" }}>
                     {/* Video - SKIN */}
                     <div
                         onMouseEnter={() => setHoverIdx(0)}
